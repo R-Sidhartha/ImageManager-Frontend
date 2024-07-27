@@ -19,6 +19,7 @@ const Dashboard = () => {
 
   useEffect(() => {
     dispatch(fetchFolders());
+        // eslint-disable-next-line
   }, [dispatch]);
 
   // Fetch images when selectedFolder changes
