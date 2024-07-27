@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchImages } from "../redux/slices/imageSlice";
 import { RxCrossCircled } from "react-icons/rx";
 import loadinggif from "../components/Loading/loading.gif";
+import { fetchFolders } from "../redux/slices/folderSlice";
 
 const Dashboard = () => {
   const [selectedFolder, setSelectedFolder] = useState(null);
