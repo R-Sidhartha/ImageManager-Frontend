@@ -7,13 +7,18 @@ import SearchBar from "../components/Search/SearchBar";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchImages } from "../redux/slices/imageSlice";
 import { RxCrossCircled } from "react-icons/rx";
+import loadinggif from "../components/Loading/loading.gif";
 
 const Dashboard = () => {
   const [selectedFolder, setSelectedFolder] = useState(null);
   const [selectedFolderName, setSelectedFolderName] = useState("");
   const [isMenuOpen, setIsMenuOpen] = useState(true);
   const dispatch = useDispatch();
-  const { folders } = useSelector((state) => state.folders);
+  const { folders, loading } = useSelector((state) => state.folders);
+
+  useEffect(() => {
+    dispatch(fetchFolders());
+  }, [dispatch]);
 
   // Fetch images when selectedFolder changes
   useEffect(() => {
@@ -54,6 +59,9 @@ const Dashboard = () => {
       setSelectedFolderName("");
     }
   };
+  if (loading) {
+    return <img src={loadinggif} alt="Loading" width={80} className="mx-auto" />;
+  }
   if (!folders || folders.length === 0) {
     return (
       <div className="flex flex-col gap-2 items-center justify-center border bg-gray-200 rounded shadow-xl w-1/2 mx-auto mt-10">
