@@ -15,7 +15,8 @@ const Header = () => {
     navigate('/');
   };
 
-  const toggleDropdown = () => {
+  const toggleDropdown = (e) => {
+    e.preventDefault();
     setIsDropdownOpen(!isDropdownOpen);
   };
 

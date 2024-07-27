@@ -5,21 +5,24 @@ import UploadImage from "../components/Images/UploadImage";
 import ImageList from "../components/Images/ImageList";
 import SearchBar from "../components/Search/SearchBar";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchImages } from "../redux/slices/imageSlice";
 import { RxCrossCircled } from "react-icons/rx";
-import loadinggif from "../components/Loading/loading.gif";
 import { fetchFolders } from "../redux/slices/folderSlice";
+import { fetchImages } from "../redux/slices/imageSlice";
 
 const Dashboard = () => {
   const [selectedFolder, setSelectedFolder] = useState(null);
   const [selectedFolderName, setSelectedFolderName] = useState("");
   const [isMenuOpen, setIsMenuOpen] = useState(true);
+  const [loading, setLoading] = useState(true);
   const dispatch = useDispatch();
-  const { folders, loading } = useSelector((state) => state.folders);
+  const { folders } = useSelector((state) => state.folders);
 
   useEffect(() => {
-    dispatch(fetchFolders());
-        // eslint-disable-next-line
+    const loadFolders = async () => {
+      await dispatch(fetchFolders());
+      setLoading(false);
+    };
+    loadFolders();
   }, [dispatch]);
 
   // Fetch images when selectedFolder changes
@@ -30,12 +33,12 @@ const Dashboard = () => {
   }, [selectedFolder, dispatch]);
 
   useEffect(() => {
-    if (folders.length > 0 && !selectedFolder) {
+    if (!loading && folders.length > 0 && !selectedFolder) {
       // Set the default folder to the first folder in the list
       setSelectedFolder(folders[0]._id);
       setSelectedFolderName(folders[0].name);
     }
-  }, [folders, selectedFolder]);
+  }, [loading, folders, selectedFolder]);
 
   const handleFolderSelect = (folderId, folderName) => {
     setSelectedFolder(folderId);
@@ -61,21 +64,11 @@ const Dashboard = () => {
       setSelectedFolderName("");
     }
   };
+
   if (loading) {
-    return <img src={loadinggif} alt="Loading" width={80} className="mx-auto" />;
+    return <div>Loading...</div>;
   }
-  if (!folders || folders.length === 0) {
-    return (
-      <div className="flex flex-col gap-2 items-center justify-center border bg-gray-200 rounded shadow-xl w-1/2 mx-auto mt-10">
-        <div className="text-2xl font-bold text-zinc-800 text-center my-5">
-          Get Started &rarr;
-        </div>
-        <div className="w-3/4">
-          <CreateFolder onNewFolder={handleNewFolder} parentFolder={null} />
-        </div>
-      </div>
-    );
-  }
+
   return (
     <div className="relative min-h-screen md:min-h-full md:flex justify-center">
       {/* Menu Toggle Button */}
@@ -106,16 +99,20 @@ const Dashboard = () => {
         />
       </div>
       <div className={`md:w-[74%] md:pl-4 transition-all md:mt-4`}>
+        {folders && folders.length > 0 && (
         <SearchBar
           selectedFolder={selectedFolder}
           selectedFolderName={selectedFolderName}
         />
+        )}
         <div className="flex flex-col sm:flex-row gap-4 md:gap-10">
+          {folders && folders.length > 0 && (
           <UploadImage
             selectedFolderName={selectedFolderName}
             selectedFolder={selectedFolder}
           />
-          {selectedFolder && (
+          )}
+          {folders && folders.length > 0 && (
             <CreateFolder
               onNewFolder={handleNewFolder}
               parentFolder={selectedFolder}

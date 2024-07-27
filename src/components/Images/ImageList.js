@@ -65,6 +65,11 @@ const ImageList = ({ selectedFolderName }) => {
       {loadingFetch && (
         <img src={loading} alt="Loading" width={80} className="mx-auto" />
       )}
+        {!loadingFetch && images.length === 0 && (
+        <div className="col-span-full text-center text-gray-500">
+          No images found, try creating folder and upload one to it.
+        </div>
+      )}
       <div className="grid lg:grid-cols-4 md:grid-cols-3 grid-cols-2 gap-4">
         {!loadingFetch && searchMessage && (
           <div className="col-span-full text-center text-red-500">
@@ -77,13 +82,13 @@ const ImageList = ({ selectedFolderName }) => {
               <button
                 onClick={() =>
                   handleImageClick(
-                    `http://localhost:5000/images${image.imageUrl}`
+                    `https://imagemanager-server.onrender.com/images${image.imageUrl}`
                   )
                 }
                 className="bg-black p-2 rounded cursor-pointer relative overflow-hidden w-full"
               >
                 <img
-                  src={`http://localhost:5000/images${image.imageUrl}`}
+                  src={`https://imagemanager-server.onrender.com/images${image.imageUrl}`}
                   alt={image.name}
                   className="w-full h-52 object-cover rounded mb-2"
                 />

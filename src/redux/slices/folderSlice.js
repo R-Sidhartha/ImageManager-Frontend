@@ -7,7 +7,7 @@ const initialState = {
   error: null,
 };
 
-const host = process.env.REACT_APP_HOST
+const host = process.env.REACT_APP_HOST || 'https://imagemanager-server.onrender.com'
 
 export const fetchFolders = createAsyncThunk(
   "folders/fetchFolders",

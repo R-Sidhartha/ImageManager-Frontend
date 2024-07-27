@@ -17,7 +17,7 @@ const initialState = {
   searchMessage: ''
 };
 
-const host = process.env.REACT_APP_HOST
+const host = process.env.REACT_APP_HOST || 'https://imagemanager-server.onrender.com'
 export const fetchImages = createAsyncThunk('images/fetchImages', async ({ query, folderId }, thunkAPI) => {
   const { auth } = thunkAPI.getState();
   try {

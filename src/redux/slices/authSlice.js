@@ -11,7 +11,7 @@ const userInfoFromStorage = localStorage.getItem('userInfo')
   error: null,
 };
 
-const host = process.env.REACT_APP_HOST
+const host = process.env.REACT_APP_HOST || 'https://imagemanager-server.onrender.com'
 export const register = createAsyncThunk('auth/register', async (userData, thunkAPI) => {
   try {
     const response = await axios.post(`${host}/api/users`, userData);

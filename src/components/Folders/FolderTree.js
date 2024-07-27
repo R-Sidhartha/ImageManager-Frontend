@@ -19,7 +19,7 @@ const FolderTree = ({ onSelectFolder, selectedFolder, onFolderDelete }) => {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [selectedFolderToEdit, setSelectedFolderToEdit] = useState(null);
   const [openDropdown, setOpenDropdown] = useState(null);
-  
+
   useEffect(() => {
     dispatch(fetchFolders()).then((res) => {
       if (res.error) {
@@ -112,13 +112,18 @@ const FolderTree = ({ onSelectFolder, selectedFolder, onFolderDelete }) => {
       {loading && (
         <img src={loadingpng} alt="Loading" width={40} className="mx-auto" />
       )}{" "}
-      <div>{renderFolders(folders)}</div>
+      {!loading && folders.length === 0 && (
+        <div className="text-center text-gray-500">
+          No folders found, create one
+        </div>
+      )}
+      {!loading && folders.length > 0 && <div>{renderFolders(folders)}</div>}
       <EditModal
         isOpen={showEditModal}
         onClose={() => setShowEditModal(false)}
         onSave={handleSaveEdit}
         fromImage={false}
-        />
+      />
       <ConfirmDeleteModal
         isOpen={showDeleteModal}
         onClose={() => setShowDeleteModal(false)}
